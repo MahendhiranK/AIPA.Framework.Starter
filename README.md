@@ -7,7 +7,7 @@ The **AIPA Framework** is a .NET-based solution that integrates **AI/ML models**
 ## 📚 Author
 
 Mahendhiran Krishnan  
-LinkedIn: [Mahendhiran Krishnan](https://www.linkedin.com/in/mahendhiran-krishnan/)
+LinkedIn: [Mahendhiran Krishnan](https://www.linkedin.com/in/mahendhiran-krishnan-04a5292b/)
 
 
 ##  🛠️ Setup Instructions
