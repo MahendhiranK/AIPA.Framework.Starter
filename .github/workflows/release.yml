@@ -1,0 +1,44 @@
+name: Build and Release AIPA Framework
+
+on:
+  push:
+    tags:
+      - 'v*'  # Runs when a tag like v1.0.0 is pushed
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    permissions:
+      contents: write  # Required to upload to Releases
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build Self-contained Executable
+        run: |
+          dotnet publish AIPA.Framework/AIPA.Framework.csproj ^
+            -c Release ^
+            -r win-x64 ^
+            --self-contained true ^
+            /p:PublishSingleFile=true ^
+            /p:IncludeNativeLibrariesForSelfExtract=true ^
+            /p:EnableCompressionInSingleFile=true
+
+      - name: Create ZIP Archive
+        run: |
+          Compress-Archive -Path AIPA.Framework\bin\Release\net8.0\win-x64\publish\* -DestinationPath AIPA_Framework_Release.zip
+
+      - name: Create GitHub Release and Upload Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: AIPA_Framework_Release.zip
